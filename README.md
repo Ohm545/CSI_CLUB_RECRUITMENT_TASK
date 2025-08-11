@@ -29,6 +29,7 @@ From filtering and searching to automated calls and AI-generated reports, this d
   - Gemini API - AI analysis and reporting
   - Ngrok - localhost tunneling
 - File handling: XLSX parsing for Excel uploads
+- Have used Multer as a middleware for files so it will uploads the file in uploads/ folder in your local environment
 
 ## Installation and Setup
 
@@ -38,4 +39,4 @@ From filtering and searching to automated calls and AI-generated reports, this d
 - For getting twilio credintials just make account in twilio and you will get auth toke, sid and your twilio phonenumber.
 - For ngrok public URL: first run `npm start` and then run `ngrok http 3000`
 
-Note: If you have free trial of twilio, then it can only call the twilio verify mobile number so you need to first verify the mobilenumbers of student in twilio with just OTP.
+## Note: If you have free trial of twilio, then it can only call the twilio verify mobile number so you need to first verify the mobilenumbers of student in twilio with just OTP.
