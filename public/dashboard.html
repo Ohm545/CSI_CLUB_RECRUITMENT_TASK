@@ -689,8 +689,6 @@ function submitContact()
         body: JSON.stringify({ number: selectedStudent.mobilenumber, message: callMsg })
       })
         .then(res => res.json())
-        .then(data => alert(data.message))
-        .catch(() => alert("Call request failed"));
     }
     closePopup();
 }
