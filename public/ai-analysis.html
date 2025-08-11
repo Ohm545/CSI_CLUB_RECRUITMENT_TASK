@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Analysis</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 30px auto;
+    max-width: 900px;
+    background: #f9fbfd;
+    color: #222;
+    line-height: 1.6;
+  }
+  #container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+    padding: 30px 40px;
+    min-height: 300px;
+    white-space: pre-wrap;
+    font-size: 16px;
+    overflow-wrap: break-word;
+  }
+  h1 {
+    color: #0078d4;
+    font-weight: 800;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  #loading {
+    font-style: italic;
+    color: #555;
+    text-align: center;
+    margin-top: 60px;
+  }
+  #error {
+    color: #d9534f;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+  <h1>AI Analysis Report</h1>
+  <div id="container">
+    <div id="loading">Loading AI analysis, please wait...</div>
+  </div>
+  <script>
+    const container = document.getElementById('container');
+    const loading = document.getElementById('loading');
+    const data = JSON.parse(localStorage.getItem('studentData'));
+    if(data.length == 0) 
+    {
+      loading.style.display = 'none';
+      container.innerText = 'No student data available for analysis.';
+    } 
+    else 
+    {
+    try 
+    {
+        const response = await fetch('/ai-analysis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data })
+        });
+        if(!response.ok) throw new Error('Failed to get AI response');
+        const result=await response.json();
+        loading.style.display='none';
+        container.innerText=result.analysis || "Error";
+      } 
+      catch(err) 
+      {
+        loading.style.display = 'none';
+        console.log(err);
+        container.innerHTML = `<div id="error">Error loading AI analysis. Try again later.</div>`;
+      }
+    }
+  </script>
+</body>
+</html>
