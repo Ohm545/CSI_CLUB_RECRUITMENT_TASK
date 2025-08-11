@@ -58,16 +58,18 @@ app.post("/ai",(req,res)=>{
 });
 app.post('/makeCall', async (req, res) => {
     try {
-        const {number,message} = req.body;
-        console.log(number);
-        const call=await client.calls.create({
+        let { number, message } = req.body;
+        number = number.replace(/\s+/g, '');
+        if (!number.startsWith('+91')) number = `+91${number}`;
+
+        const call = await client.calls.create({
             url: `${process.env.NGROK_URL}/voice?message=${encodeURIComponent(message)}`,
             to: number,
             from: process.env.TWILIO_FROM
         });
+
         res.json({ success: true, callSid: call.sid });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ success: false, error: err.message });
     }
 });
@@ -94,7 +96,6 @@ Please generate a professional and concise report with the following sections, u
 
 Do not use bullet points, lists, or markdown formatting. Keep the language simple, professional, and easy to read for all stakeholders.
 `;
-
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
     const result = await model.generateContent(prompt);
     const response = result.response;
